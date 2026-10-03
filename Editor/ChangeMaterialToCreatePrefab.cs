@@ -150,6 +150,15 @@ namespace Aoirusann
 				return;
 			}
 
+			// Add the new batch in strict alphabetical order (by name, then asset path)
+			toAdd.Sort((a, b) =>
+			{
+				int byName = string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase);
+				if (byName != 0)
+					return byName;
+				return string.Compare(AssetDatabase.GetAssetPath(a), AssetDatabase.GetAssetPath(b), System.StringComparison.OrdinalIgnoreCase);
+			});
+
 			Undo.RegisterCompleteObjectUndo(this, "Add selected source materials");
 			group.srcs.AddRange(toAdd);
 		}
